@@ -1,10 +1,6 @@
 part of 'timer_cubit.dart';
 
-enum TimerStatus {
-  idle,
-  running,
-  paused,
-}
+enum TimerStatus { idle, running, paused, completed }
 
 @immutable
 class TimerState {
