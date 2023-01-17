@@ -9,7 +9,31 @@ class TimerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => TimerCubit(),
-      child: const TimerView(),
+      child: BlocListener<TimerCubit, TimerState>(
+        listener: (context, state) {
+          if (state.status == TimerStatus.completed) {
+            final timerCubit = context.read<TimerCubit>();
+            showDialog<void>(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  title: const Text('타이머 종료'),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        timerCubit.stop();
+                        Navigator.pop(context);
+                      },
+                      child: const Text('확인'),
+                    )
+                  ],
+                );
+              },
+            );
+          }
+        },
+        child: const TimerView(),
+      ),
     );
   }
 }
@@ -29,18 +53,6 @@ class TimerView extends StatelessWidget {
       appBar: AppBar(title: const Text('pomodoro_timer')),
       body: Stack(
         children: [
-          // BlocBuilder<TimerCubit, TimerState>(
-          //   builder: (context, state) {
-          //     if (state.status == TimerStatus.completed) {
-          //       return [
-          //         ModalBarrier(
-          //           color: Colors.black.withAlpha(100),
-          //         ),
-          //         const AlertDialog(title: Text('굳'))
-          //       ];
-          //     }
-          //   },
-          // ),
           Column(
             children: [
               BlocSelector<TimerCubit, TimerState, int>(
