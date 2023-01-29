@@ -28,6 +28,7 @@ class TimerCubit extends Cubit<TimerState> {
     if (state.status == TimerStatus.idle) {
       _countDownStream?.cancel();
       _countDownStream = countDown(_durationInSecond).listen(_onCountDown);
+      _audioService.stop();
     } else if (state.status == TimerStatus.paused) {
       resume();
     }

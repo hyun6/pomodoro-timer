@@ -2,9 +2,14 @@ import 'package:just_audio/just_audio.dart';
 
 class AudioService {
   AudioService() {
+    _init();
+  }
+
+  final AudioPlayer _player = AudioPlayer();
+
+  void _init() {
     open('assets/audio/complete00.mp3');
   }
-  final AudioPlayer _player = AudioPlayer();
 
   Future<Duration?> open(String assetPath) async {
     return _player.setAsset(assetPath);
@@ -12,5 +17,10 @@ class AudioService {
 
   void play() {
     _player.play();
+  }
+
+  void stop() {
+    _player.stop();
+    _init();
   }
 }
