@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:pomodoro_timer/services/audio.dart';
 import 'package:pomodoro_timer/services/countdown.dart';
 
