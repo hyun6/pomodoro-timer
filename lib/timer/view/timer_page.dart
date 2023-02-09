@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
+import 'package:pomodoro_timer/timer/widget/task_name.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});
@@ -51,58 +52,66 @@ class TimerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('pomodoro_timer')),
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              BlocSelector<TimerCubit, TimerState, int>(
-                selector: (state) {
-                  return state.duration;
-                },
-                builder: (context, duration) {
-                  return Text(
-                    _durationToTimeText(duration),
-                    style: const TextStyle(fontSize: 40),
-                  );
-                },
-              ),
-              const Padding(padding: EdgeInsets.all(10)),
-              BlocSelector<TimerCubit, TimerState, TimerStatus>(
-                selector: (state) {
-                  return state.status;
-                },
-                builder: (context, status) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (status == TimerStatus.running)
-                        FloatingActionButton(
-                          child: const Icon(Icons.pause),
-                          onPressed: () => context.read<TimerCubit>().pause(),
-                        )
-                      else
-                        FloatingActionButton(
-                          child: const Icon(Icons.play_arrow),
-                          onPressed: () => context.read<TimerCubit>().start(),
-                        ),
-                      const Padding(padding: EdgeInsets.all(10)),
-                      FloatingActionButton(
-                        child: const Icon(Icons.stop),
-                        onPressed: () => context.read<TimerCubit>().stop(),
-                      ),
-                    ],
-                  );
-                },
-              )
-            ],
+          // task name
+          const Flexible(
+            child: TaskName(taskName: '공부'),
           ),
-
-          // const Center(
-          //   child: AlertDialog(
-          //     title: Text('Loading...'),
-          //     elevation: 0,
-          //   ),
-          // ),
+          Flexible(
+            flex: 3,
+            child: BlocSelector<TimerCubit, TimerState, int>(
+              selector: (state) {
+                return state.duration;
+              },
+              builder: (context, duration) {
+                return Column(
+                  children: [
+                    const SizedBox(height: 80),
+                    Text(
+                      _durationToTimeText(duration),
+                      style: const TextStyle(fontSize: 40),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Flexible(
+            child: BlocSelector<TimerCubit, TimerState, TimerStatus>(
+              selector: (state) {
+                return state.status;
+              },
+              builder: (context, status) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (status == TimerStatus.running)
+                      IconButton(
+                        icon: const Icon(Icons.pause_circle_filled_outlined),
+                        onPressed: () => context.read<TimerCubit>().pause(),
+                      )
+                    else
+                      IconButton(
+                        icon: const Icon(
+                          Icons.play_circle_fill_outlined,
+                          size: 50,
+                        ),
+                        onPressed: () => context.read<TimerCubit>().start(),
+                      ),
+                    const Padding(padding: EdgeInsets.all(10)),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.stop_circle_outlined,
+                        size: 50,
+                      ),
+                      onPressed: () => context.read<TimerCubit>().stop(),
+                    ),
+                  ],
+                );
+              },
+            ),
+          )
         ],
       ),
     );
