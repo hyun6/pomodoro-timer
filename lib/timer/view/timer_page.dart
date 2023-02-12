@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
+import 'package:pomodoro_timer/timer/data/task_model.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 
 class TimerPage extends StatelessWidget {
@@ -22,7 +23,6 @@ class TimerPage extends StatelessWidget {
                   actions: [
                     ElevatedButton(
                       onPressed: () {
-                        timerCubit.stop();
                         Navigator.pop(context);
                       },
                       child: const Text('확인'),
@@ -42,9 +42,9 @@ class TimerPage extends StatelessWidget {
 class TimerView extends StatelessWidget {
   const TimerView({super.key});
 
-  String _durationToTimeText(int duration) {
-    final min = (duration / 60).floor().toString();
-    final sec = (duration % 60).toString().padLeft(2, '0');
+  String _tickToTimeText(int tick) {
+    final min = (tick / 60).floor().toString();
+    final sec = (tick % 60).toString().padLeft(2, '0');
     return '$min:$sec';
   }
 
@@ -55,21 +55,28 @@ class TimerView extends StatelessWidget {
       body: Column(
         children: [
           // task name
-          const Flexible(
-            child: TaskName(taskName: '공부'),
+          Flexible(
+            child: BlocSelector<TimerCubit, TimerState, TaskModel>(
+              selector: (state) {
+                return state.task;
+              },
+              builder: (context, task) {
+                return TaskName(taskName: task.name);
+              },
+            ),
           ),
           Flexible(
             flex: 3,
             child: BlocSelector<TimerCubit, TimerState, int>(
               selector: (state) {
-                return state.duration;
+                return state.tick;
               },
-              builder: (context, duration) {
+              builder: (context, tick) {
                 return Column(
                   children: [
                     const SizedBox(height: 80),
                     Text(
-                      _durationToTimeText(duration),
+                      _tickToTimeText(tick),
                       style: const TextStyle(fontSize: 40),
                     ),
                   ],
@@ -88,7 +95,10 @@ class TimerView extends StatelessWidget {
                   children: [
                     if (status == TimerStatus.running)
                       IconButton(
-                        icon: const Icon(Icons.pause_circle_filled_outlined),
+                        icon: const Icon(
+                          Icons.pause_circle_filled_outlined,
+                          size: 50,
+                        ),
                         onPressed: () => context.read<TimerCubit>().pause(),
                       )
                     else

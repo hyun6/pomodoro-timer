@@ -8,7 +8,7 @@ import Foundation
 import audio_session
 import just_audio
 import package_info_plus
-import path_provider_macos
+import path_provider_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioSessionPlugin.register(with: registry.registrar(forPlugin: "AudioSessionPlugin"))

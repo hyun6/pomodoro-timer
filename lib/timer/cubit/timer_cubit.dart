@@ -5,28 +5,52 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer/services/audio.dart';
 import 'package:pomodoro_timer/services/countdown.dart';
+import 'package:pomodoro_timer/timer/data/task_model.dart';
 
 part 'timer_state.dart';
 
+// todo: task feature로 따로 분리
+final focusTask = TaskModel(
+  name: 'focus',
+  duration: const Duration(minutes: 25).inSeconds,
+);
+final breakTask = TaskModel(
+  name: 'break',
+  duration: const Duration(minutes: 5).inSeconds,
+);
+
 class TimerCubit extends Cubit<TimerState> {
-  TimerCubit() : super(const TimerState(0));
+  TimerCubit()
+      : super(TimerState(focusTask, TimerStatus.idle, focusTask.duration));
 
   final AudioService _audioService = AudioService();
   StreamSubscription<int>? _countDownStream;
-  static const int default25Min = 10; //60 * 25;
-  final int _durationInSecond = default25Min;
+  TaskModel _currentTask = focusTask;
+
+  void switchCurrentTask() {
+    _currentTask = _currentTask == focusTask ? breakTask : focusTask;
+  }
 
   void stop() {
     if (state.status != TimerStatus.idle) {
       _countDownStream?.cancel();
     }
-    emit(TimerState(_durationInSecond));
+    switchCurrentTask();
+    emit(
+      state.copyWith(
+        task: _currentTask,
+        status: TimerStatus.idle,
+        tick: _currentTask.duration,
+      ),
+    );
   }
 
   void start() {
-    if (state.status == TimerStatus.idle) {
+    if (state.status == TimerStatus.idle ||
+        state.status == TimerStatus.completed) {
       _countDownStream?.cancel();
-      _countDownStream = countDown(_durationInSecond).listen(_onCountDown);
+      emit(state.copyWith(status: TimerStatus.running));
+      _countDownStream = countDown(_currentTask.duration).listen(_onCountDown);
       _audioService.stop();
     } else if (state.status == TimerStatus.paused) {
       resume();
@@ -36,13 +60,14 @@ class TimerCubit extends Cubit<TimerState> {
   void pause() {
     if (state.status == TimerStatus.running) {
       _countDownStream?.pause();
-      emit(TimerState(state.duration, TimerStatus.paused));
+      emit(state.copyWith(status: TimerStatus.paused));
     }
   }
 
   void resume() {
     if (state.status == TimerStatus.paused) {
       _countDownStream?.resume();
+      emit(state.copyWith(status: TimerStatus.running));
     }
   }
 
@@ -51,19 +76,27 @@ class TimerCubit extends Cubit<TimerState> {
     if (count == 0) {
       _onComplete();
     } else {
-      emit(TimerState(count, TimerStatus.running));
+      emit(state.copyWith(tick: count));
     }
   }
 
   void _onComplete() {
-    emit(const TimerState(0, TimerStatus.completed));
+    // switch (focus <-> break) task
+    switchCurrentTask();
+    emit(
+      TimerState(
+        _currentTask,
+        TimerStatus.completed,
+        _currentTask.duration,
+      ),
+    );
     _audioService.play();
   }
 
   @override
   void onChange(Change<TimerState> change) {
     log('${change.currentState.status} -> ${change.nextState.status}');
-    log('${change.currentState.duration} -> ${change.nextState.duration}');
+    log('${change.currentState.tick} -> ${change.nextState.tick}');
     super.onChange(change);
   }
 }
