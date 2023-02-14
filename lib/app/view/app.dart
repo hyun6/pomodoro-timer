@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:pomodoro_timer/counter/counter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/l10n/l10n.dart';
 import 'package:pomodoro_timer/timer/view/timer_page.dart';
+import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -18,7 +19,13 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const TimerPage(),
+      home: BlocProvider(
+        create: (context) => TrayCubit()..init(),
+        child: BlocListener<TrayCubit, TrayState>(
+          listener: (context, state) {},
+          child: const TimerPage(),
+        ),
+      ),
     );
   }
 }

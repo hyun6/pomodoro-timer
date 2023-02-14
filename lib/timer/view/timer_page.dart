@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/data/task_model.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
+import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});
@@ -14,7 +15,6 @@ class TimerPage extends StatelessWidget {
       child: BlocListener<TimerCubit, TimerState>(
         listener: (context, state) {
           if (state.status == TimerStatus.completed) {
-            final timerCubit = context.read<TimerCubit>();
             showDialog<void>(
               context: context,
               builder: (_) {
@@ -67,21 +67,21 @@ class TimerView extends StatelessWidget {
           ),
           Flexible(
             flex: 3,
-            child: BlocSelector<TimerCubit, TimerState, int>(
-              selector: (state) {
-                return state.tick;
+            child: BlocConsumer<TimerCubit, TimerState>(
+              listenWhen: (previous, current) => previous.tick != current.tick,
+              listener: (context, state) {
+                context.read<TrayCubit>().setTitle(_tickToTimeText(state.tick));
               },
-              builder: (context, tick) {
-                return Column(
-                  children: [
-                    const SizedBox(height: 80),
-                    Text(
-                      _tickToTimeText(tick),
-                      style: const TextStyle(fontSize: 40),
-                    ),
-                  ],
-                );
-              },
+              buildWhen: (previous, current) => previous.tick != current.tick,
+              builder: (_, state) => Column(
+                children: [
+                  const SizedBox(height: 80),
+                  Text(
+                    _tickToTimeText(state.tick),
+                    style: const TextStyle(fontSize: 40),
+                  ),
+                ],
+              ),
             ),
           ),
           Flexible(
