@@ -18,9 +18,9 @@ jobs:
         shell: bash
 
       # build
-      # - name: flutter build
-      #   run: ~\Dev\actions-runner\build.bat
-      #   shell: cmd
+      - name: flutter build
+        run: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build_macos.sh
+        shell: bash
 
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
