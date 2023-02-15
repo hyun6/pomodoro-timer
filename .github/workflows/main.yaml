@@ -26,7 +26,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/pomodoro_timer.app
+          path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/
+#           path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/pomodoro_timer.app
           if-no-files-found: error
 
   build:
