@@ -15,17 +15,23 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-        shell: zsh
+        shell: bash
 
       # build
-      # - name: flutter build
-      #   run: ~\Dev\actions-runner\build.bat
-      #   shell: cmd
+      - name: flutter build
+        run: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build_macos.sh
+        shell: bash
+      
+      # upload
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/
+#           path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/pomodoro_timer.app
+          if-no-files-found: error
 
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       flutter_channel: stable
       flutter_version: 3.3.8
-
-runs-on: self-hosted
