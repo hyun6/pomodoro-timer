@@ -65,6 +65,7 @@ class TimerView extends StatelessWidget {
               },
             ),
           ),
+          // display timer
           Flexible(
             flex: 3,
             child: BlocConsumer<TimerCubit, TimerState>(
@@ -84,6 +85,7 @@ class TimerView extends StatelessWidget {
               ),
             ),
           ),
+          // buttons
           Flexible(
             child: BlocSelector<TimerCubit, TimerState, TimerStatus>(
               selector: (state) {
@@ -99,6 +101,7 @@ class TimerView extends StatelessWidget {
                           Icons.pause_circle_filled_outlined,
                           size: 50,
                         ),
+                        autofocus: true,
                         onPressed: () => context.read<TimerCubit>().pause(),
                       )
                     else
@@ -107,6 +110,7 @@ class TimerView extends StatelessWidget {
                           Icons.play_circle_fill_outlined,
                           size: 50,
                         ),
+                        autofocus: true,
                         onPressed: () => context.read<TimerCubit>().start(),
                       ),
                     const Padding(padding: EdgeInsets.all(10)),
