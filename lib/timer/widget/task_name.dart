@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 
-class TaskName extends StatelessWidget {
-  const TaskName({
+class TaskNameWidget extends StatelessWidget {
+  const TaskNameWidget({
     super.key,
-    required this.taskName,
   });
-  final String taskName;
 
   @override
   Widget build(BuildContext context) {
+    final taskName =
+        context.select((TimerCubit cubit) => cubit.state.task.name);
     return Column(
       children: [
         const Text(

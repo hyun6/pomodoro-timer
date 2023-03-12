@@ -24,7 +24,7 @@ class TimerCubit extends Cubit<TimerState> {
       : super(TimerState(focusTask, TimerStatus.idle, focusTask.duration));
 
   final AudioService _audioService = AudioService();
-  StreamSubscription<int>? _countDownStream;
+  StreamSubscription<int>? _countDownStreamSubscription;
   TaskModel _currentTask = focusTask;
 
   void switchCurrentTask() {
@@ -33,7 +33,7 @@ class TimerCubit extends Cubit<TimerState> {
 
   void stop() {
     if (state.status != TimerStatus.idle) {
-      _countDownStream?.cancel();
+      _countDownStreamSubscription?.cancel();
     }
     switchCurrentTask();
     emit(
@@ -48,9 +48,11 @@ class TimerCubit extends Cubit<TimerState> {
   void start() {
     if (state.status == TimerStatus.idle ||
         state.status == TimerStatus.completed) {
-      _countDownStream?.cancel();
+      _countDownStreamSubscription?.cancel();
       emit(state.copyWith(status: TimerStatus.running));
-      _countDownStream = countDown(_currentTask.duration).listen(_onCountDown);
+
+      _countDownStreamSubscription =
+          countDown(_currentTask.duration).listen(_onCountDown);
       _audioService.stop();
     } else if (state.status == TimerStatus.paused) {
       resume();
@@ -59,14 +61,14 @@ class TimerCubit extends Cubit<TimerState> {
 
   void pause() {
     if (state.status == TimerStatus.running) {
-      _countDownStream?.pause();
+      _countDownStreamSubscription?.pause();
       emit(state.copyWith(status: TimerStatus.paused));
     }
   }
 
   void resume() {
     if (state.status == TimerStatus.paused) {
-      _countDownStream?.resume();
+      _countDownStreamSubscription?.resume();
       emit(state.copyWith(status: TimerStatus.running));
     }
   }
