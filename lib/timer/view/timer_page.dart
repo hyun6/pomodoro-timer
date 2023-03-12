@@ -24,6 +24,7 @@ class TimerPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
+                      autofocus: true,
                       child: const Text('확인'),
                     )
                   ],
