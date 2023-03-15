@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
+import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
+import 'package:window_to_front/window_to_front.dart';
 
 class TimerPage extends StatelessWidget {
   const TimerPage({super.key});
@@ -10,7 +12,20 @@ class TimerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TimerCubit(),
+      create: (_) {
+        final timerCubit = TimerCubit();
+        // init tray icon click handler
+        context.read<TrayCubit>()
+          ..setLeftClickHandler(WindowToFront.activate)
+          ..setRightClickHandler(() {
+            if (timerCubit.state.status == TimerStatus.running) {
+              timerCubit.pause();
+            } else {
+              timerCubit.start();
+            }
+          });
+        return timerCubit;
+      },
       child: BlocListener<TimerCubit, TimerState>(
         listener: (context, state) {
           if (state.status == TimerStatus.completed) {
