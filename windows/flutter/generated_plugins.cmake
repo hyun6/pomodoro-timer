@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   system_tray
+  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
