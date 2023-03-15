@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer/services/tray.dart';
+import 'package:pomodoro_timer/services/tray_service.dart';
 
 part 'tray_state.dart';
 
