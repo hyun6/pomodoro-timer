@@ -20,6 +20,10 @@ class TrayService {
             _rightClickHandler?.call();
             break;
           }
+        default:
+          {
+            break;
+          }
       }
     });
   }

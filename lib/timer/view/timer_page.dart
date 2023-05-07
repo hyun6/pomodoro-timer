@@ -1,13 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
 import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
-import 'package:window_to_front/window_to_front.dart';
+import 'package:window_manager/window_manager.dart';
 
-class TimerPage extends StatelessWidget {
-  const TimerPage({super.key});
+class TimerPage extends StatelessWidget with WindowListener {
+  TimerPage({super.key}) {
+    windowManager
+      ..addListener(this)
+      ..setPreventClose(false);
+  }
+
+  // not close app, just hide window
+  @override
+  void onWindowClose() {
+    log('close');
+    windowManager.hide();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +29,7 @@ class TimerPage extends StatelessWidget {
         final timerCubit = TimerCubit();
         // init tray icon click handler
         context.read<TrayCubit>()
-          ..setLeftClickHandler(WindowToFront.activate)
+          ..setLeftClickHandler(windowManager.show)
           ..setRightClickHandler(() {
             if (timerCubit.state.status == TimerStatus.running) {
               timerCubit.pause();
