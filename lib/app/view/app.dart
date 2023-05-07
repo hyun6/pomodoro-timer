@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/l10n/l10n.dart';
 import 'package:pomodoro_timer/timer/view/timer_page.dart';
 import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
+import 'package:window_manager/window_manager.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -23,9 +25,73 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: BlocProvider(
         create: (context) => TrayCubit()..init(),
-        child: BlocListener<TrayCubit, TrayState>(
-          listener: (context, state) {},
-          child: const TimerPage(),
+        child: PlatformMenuBar(
+          menus: [
+            PlatformMenu(
+              label: 'pomo_timer',
+              menus: [
+                PlatformMenuItemGroup(
+                  members: [
+                    if (PlatformProvidedMenuItem.hasMenu(
+                      PlatformProvidedMenuItemType.about,
+                    ))
+                      const PlatformProvidedMenuItem(
+                        type: PlatformProvidedMenuItemType.about,
+                      ),
+                  ],
+                ),
+                PlatformMenuItemGroup(
+                  members: [
+                    if (PlatformProvidedMenuItem.hasMenu(
+                      PlatformProvidedMenuItemType.servicesSubmenu,
+                    ))
+                      const PlatformProvidedMenuItem(
+                        type: PlatformProvidedMenuItemType.servicesSubmenu,
+                      ),
+                  ],
+                ),
+                PlatformMenuItemGroup(
+                  members: [
+                    if (PlatformProvidedMenuItem.hasMenu(
+                      PlatformProvidedMenuItemType.quit,
+                    ))
+                      const PlatformProvidedMenuItem(
+                        type: PlatformProvidedMenuItemType.quit,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+            PlatformMenu(
+              label: 'View',
+              menus: [
+                if (PlatformProvidedMenuItem.hasMenu(
+                  PlatformProvidedMenuItemType.toggleFullScreen,
+                ))
+                  const PlatformProvidedMenuItem(
+                    type: PlatformProvidedMenuItemType.toggleFullScreen,
+                  ),
+              ],
+            ),
+            PlatformMenu(
+              label: 'Window',
+              menus: [
+                PlatformMenuItemGroup(
+                  members: [
+                    PlatformMenuItem(
+                      label: 'Close',
+                      shortcut: const SingleActivator(
+                        LogicalKeyboardKey.keyW,
+                        meta: true,
+                      ),
+                      onSelected: windowManager.close,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+          child: TimerPage(),
         ),
       ),
     );
