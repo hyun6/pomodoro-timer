@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro_timer/services/audio.dart';
 import 'package:pomodoro_timer/services/countdown.dart';
 import 'package:pomodoro_timer/timer/data/task_model.dart';
-import 'package:window_to_front/window_to_front.dart';
+import 'package:window_manager/window_manager.dart';
 
 part 'timer_state.dart';
 
@@ -94,7 +94,8 @@ class TimerCubit extends Cubit<TimerState> {
       ),
     );
     _audioService.play();
-    WindowToFront.activate();
+
+    windowManager.show();
   }
 
   @override

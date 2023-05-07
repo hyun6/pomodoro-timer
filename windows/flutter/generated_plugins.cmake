@@ -6,7 +6,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   screen_retriever
   system_tray
   window_manager
-  window_to_front
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
