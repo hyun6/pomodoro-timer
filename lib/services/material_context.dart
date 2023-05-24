@@ -1,3 +1,3 @@
 import 'package:flutter/widgets.dart';
 
-final GlobalKey<NavigatorState> navigatorState = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> materialAppKey = GlobalKey<NavigatorState>();

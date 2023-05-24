@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro_timer/services/material_context.dart';
+import 'package:pomodoro_timer/settings/cubit/settings_cubit.dart';
+import 'package:pomodoro_timer/settings/view/settings_page.dart';
 import 'package:window_manager/window_manager.dart';
 
 List<PlatformMenu> getPlatformMenus() {
@@ -27,23 +30,15 @@ List<PlatformMenu> getPlatformMenus() {
                 meta: true,
               ),
               onSelected: () {
-                final context = navigatorState.currentContext;
+                // must using global root context
+                final context = materialAppKey.currentContext;
                 if (context == null) return;
 
                 showDialog<void>(
                   context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text('settings'),
-                    content: const Text('gg'),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        autofocus: true,
-                        child: const Text('ok'),
-                      )
-                    ],
+                  builder: (_) => BlocProvider<SettingsCubit>.value(
+                    value: context.read<SettingsCubit>(),
+                    child: const SettingsPage(),
                   ),
                 );
               },
