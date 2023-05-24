@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pomodoro_timer/settings/cubit/settings_cubit.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
@@ -40,26 +41,48 @@ class TimerPage extends StatelessWidget with WindowListener {
         return timerCubit;
       },
       child: BlocListener<TimerCubit, TimerState>(
+        listenWhen: (previous, current) =>
+            current.status == TimerStatus.completed,
         listener: (context, state) {
-          if (state.status == TimerStatus.completed) {
-            showDialog<void>(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  title: const Text('타이머 종료'),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      autofocus: true,
-                      child: const Text('확인'),
-                    )
-                  ],
-                );
-              },
-            );
+          final settingsCubit = context.read<SettingsCubit>();
+          final isAutoStartTask = settingsCubit.state.settings.isAutoStartTask;
+          final isAutoStartBreak =
+              settingsCubit.state.settings.isAutoStartBreak;
+
+          var skipDialog = false;
+          if (state.task.name == 'break') {
+            if (isAutoStartBreak) {
+              context.read<TimerCubit>().start();
+              skipDialog = true;
+            }
+          } else {
+            if (isAutoStartTask) {
+              context.read<TimerCubit>().start();
+              skipDialog = true;
+            }
           }
+
+          if (skipDialog == true) {
+            return;
+          }
+
+          showDialog<void>(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text('타이머 종료'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    autofocus: true,
+                    child: const Text('확인'),
+                  )
+                ],
+              );
+            },
+          );
         },
         child: const TimerView(),
       ),
