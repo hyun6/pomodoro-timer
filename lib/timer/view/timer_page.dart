@@ -95,12 +95,18 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // timerView repaint: https://bloclibrary.dev/#/flutterbloccoreconcepts?id=contextselect
+    // - but same repaint occurred when this code was move to TaskNameWidget
+    // - I'll take care of repaint later
+    final taskName =
+        context.select((TimerCubit cubit) => cubit.state.task.name);
+
     return Scaffold(
       appBar: AppBar(title: const Text('pomodoro_timer')),
       body: Column(
         children: [
-          const Flexible(
-            child: TaskNameWidget(),
+          Flexible(
+            child: TaskNameWidget(taskName: taskName),
           ),
           const Flexible(
             flex: 3,
