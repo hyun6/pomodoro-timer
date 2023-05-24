@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:window_manager/window_manager.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -26,7 +27,20 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = AppBlocObserver();
 
   await runZonedGuarded(
-    () async => runApp(await builder()),
+    () async {
+      runApp(await builder());
+      await windowManager.ensureInitialized();
+      const windowOptions = WindowOptions(
+        size: Size(800, 600),
+        center: true,
+        skipTaskbar: false,
+        titleBarStyle: TitleBarStyle.hidden,
+      );
+      await windowManager.waitUntilReadyToShow(windowOptions, () async {
+        await windowManager.show();
+        await windowManager.focus();
+      });
+    },
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }
