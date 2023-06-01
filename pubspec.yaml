@@ -16,7 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
-  just_audio: ^0.9.32
+  just_audio: ^0.9.34
   launch_at_startup: ^0.2.2
   package_info_plus: ^3.1.2
   system_tray: ^2.0.3
