@@ -38,6 +38,13 @@ class TimerPage extends StatelessWidget with WindowListener {
               timerCubit.start();
             }
           });
+
+        final settingsCubit = context.read<SettingsCubit>();
+        final isAutoStartTaskWhenAppLaunched =
+            settingsCubit.state.settings.isAutoStartTaskWhenAppLaunched;
+        if (isAutoStartTaskWhenAppLaunched) {
+          timerCubit.start();
+        }
         return timerCubit;
       },
       child: BlocListener<TimerCubit, TimerState>(
@@ -78,7 +85,7 @@ class TimerPage extends StatelessWidget with WindowListener {
                     },
                     autofocus: true,
                     child: const Text('확인'),
-                  )
+                  ),
                 ],
               );
             },
@@ -152,7 +159,7 @@ class TimerView extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );
