@@ -9,21 +9,26 @@ environment:
 
 dependencies:
   bloc: ^8.1.1
+  copy_with_extension: ^5.0.2
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0
+  hydrated_bloc: ^9.1.0
+  intl: ^0.18.0
   just_audio: ^0.9.32
   launch_at_startup: ^0.2.2
   package_info_plus: ^3.1.2
+  path_provider: ^2.0.15
   system_tray: ^2.0.3
   window_manager: ^0.3.2
 
 dev_dependencies:
   bloc_test: ^9.1.1
+  build_runner: ^2.3.3
+  copy_with_extension_gen: ^5.0.2
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0

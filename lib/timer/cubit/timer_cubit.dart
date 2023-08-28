@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_timer/services/audio.dart';
 import 'package:pomodoro_timer/services/countdown.dart';
@@ -54,7 +55,6 @@ class TimerCubit extends Cubit<TimerState> {
 
       _countDownStreamSubscription =
           countDown(_currentTask.duration).listen(_onCountDown);
-      _audioService.stop();
     } else if (state.status == TimerStatus.paused) {
       resume();
     }
@@ -86,6 +86,12 @@ class TimerCubit extends Cubit<TimerState> {
   void _onComplete() {
     // switch (focus <-> break) task
     switchCurrentTask();
+
+    _audioService
+      ..stop()
+      ..play();
+    windowManager.show();
+
     emit(
       TimerState(
         _currentTask,
@@ -93,9 +99,6 @@ class TimerCubit extends Cubit<TimerState> {
         _currentTask.duration,
       ),
     );
-    _audioService.play();
-
-    windowManager.show();
   }
 
   @override

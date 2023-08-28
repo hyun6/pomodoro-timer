@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pomodoro_timer/settings/cubit/settings_cubit.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
@@ -37,29 +38,58 @@ class TimerPage extends StatelessWidget with WindowListener {
               timerCubit.start();
             }
           });
+
+        final settingsCubit = context.read<SettingsCubit>();
+        final isAutoStartTaskWhenAppLaunched =
+            settingsCubit.state.settings.isAutoStartTaskWhenAppLaunched;
+        if (isAutoStartTaskWhenAppLaunched) {
+          timerCubit.start();
+        }
         return timerCubit;
       },
       child: BlocListener<TimerCubit, TimerState>(
+        listenWhen: (previous, current) =>
+            current.status == TimerStatus.completed,
         listener: (context, state) {
-          if (state.status == TimerStatus.completed) {
-            showDialog<void>(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  title: const Text('타이머 종료'),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      autofocus: true,
-                      child: const Text('확인'),
-                    )
-                  ],
-                );
-              },
-            );
+          final settingsCubit = context.read<SettingsCubit>();
+          final isAutoStartTask = settingsCubit.state.settings.isAutoStartTask;
+          final isAutoStartBreak =
+              settingsCubit.state.settings.isAutoStartBreak;
+
+          var skipDialog = false;
+          if (state.task.name == 'break') {
+            if (isAutoStartBreak) {
+              context.read<TimerCubit>().start();
+              skipDialog = true;
+            }
+          } else {
+            if (isAutoStartTask) {
+              context.read<TimerCubit>().start();
+              skipDialog = true;
+            }
           }
+
+          if (skipDialog == true) {
+            return;
+          }
+
+          showDialog<void>(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text('타이머 종료'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    autofocus: true,
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
         },
         child: const TimerView(),
       ),
@@ -72,12 +102,18 @@ class TimerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // timerView repaint: https://bloclibrary.dev/#/flutterbloccoreconcepts?id=contextselect
+    // - but same repaint occurred when this code was move to TaskNameWidget
+    // - I'll take care of repaint later
+    final taskName =
+        context.select((TimerCubit cubit) => cubit.state.task.name);
+
     return Scaffold(
       appBar: AppBar(title: const Text('pomodoro_timer')),
       body: Column(
         children: [
-          const Flexible(
-            child: TaskNameWidget(),
+          Flexible(
+            child: TaskNameWidget(taskName: taskName),
           ),
           const Flexible(
             flex: 3,
@@ -123,7 +159,7 @@ class TimerView extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

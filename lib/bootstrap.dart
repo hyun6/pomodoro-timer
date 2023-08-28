@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -28,13 +29,18 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: await getApplicationSupportDirectory(),
+      );
       runApp(await builder());
+
       await windowManager.ensureInitialized();
       const windowOptions = WindowOptions(
         size: Size(800, 600),
         center: true,
         skipTaskbar: false,
-        titleBarStyle: TitleBarStyle.hidden,
+        titleBarStyle: TitleBarStyle.normal,
       );
       await windowManager.waitUntilReadyToShow(windowOptions, () async {
         await windowManager.show();
