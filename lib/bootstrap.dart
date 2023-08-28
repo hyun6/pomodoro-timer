@@ -29,11 +29,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await runZonedGuarded(
     () async {
-      runApp(await builder());
-
+      WidgetsFlutterBinding.ensureInitialized();
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: await getApplicationSupportDirectory(),
       );
+      runApp(await builder());
 
       await windowManager.ensureInitialized();
       const windowOptions = WindowOptions(
