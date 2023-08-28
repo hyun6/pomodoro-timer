@@ -16,6 +16,18 @@ class SettingsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CheckboxWithText(
+                  text: 'auto start task when app launched',
+                  value: state.settings.isAutoStartTaskWhenAppLaunched,
+                  onChanged: (bool? changedValue) {
+                    context
+                        .read<SettingsCubit>()
+                        .setAutoStartTaskWhenAppLaunched(
+                          enable:
+                              changedValue ?? !state.settings.isAutoStartTask,
+                        );
+                  },
+                ),
+                CheckboxWithText(
                   text: 'auto start task',
                   value: state.settings.isAutoStartTask,
                   onChanged: (bool? changedValue) {

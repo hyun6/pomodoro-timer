@@ -25,7 +25,11 @@ void main() {
       act: (cubit) => cubit.setAutoStartBreak(enable: true),
       expect: () => const SettingsState(
         status: SettingsStatus.loaded,
-        settings: SettingsModel(isAutoStartTask: false, isAutoStartBreak: true),
+        settings: SettingsModel(
+          isAutoStartTask: false,
+          isAutoStartBreak: true,
+          isAutoStartTaskWhenAppLaunched: false,
+        ),
       ),
     );
   });

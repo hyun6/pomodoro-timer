@@ -7,9 +7,12 @@ part of 'settings_model.dart';
 // **************************************************************************
 
 abstract class _$SettingsModelCWProxy {
-  SettingsModel autoStartTask(bool autoStartTask);
+  SettingsModel isAutoStartTask(bool isAutoStartTask);
 
-  SettingsModel autoStartBreak(bool autoStartBreak);
+  SettingsModel isAutoStartBreak(bool isAutoStartBreak);
+
+  SettingsModel isAutoStartTaskWhenAppLaunched(
+      bool isAutoStartTaskWhenAppLaunched);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SettingsModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -18,8 +21,9 @@ abstract class _$SettingsModelCWProxy {
   /// SettingsModel(...).copyWith(id: 12, name: "My name")
   /// ````
   SettingsModel call({
-    bool? autoStartTask,
-    bool? autoStartBreak,
+    bool? isAutoStartTask,
+    bool? isAutoStartBreak,
+    bool? isAutoStartTaskWhenAppLaunched,
   });
 }
 
@@ -30,12 +34,17 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
   final SettingsModel _value;
 
   @override
-  SettingsModel autoStartTask(bool autoStartTask) =>
-      this(autoStartTask: autoStartTask);
+  SettingsModel isAutoStartTask(bool isAutoStartTask) =>
+      this(isAutoStartTask: isAutoStartTask);
 
   @override
-  SettingsModel autoStartBreak(bool autoStartBreak) =>
-      this(autoStartBreak: autoStartBreak);
+  SettingsModel isAutoStartBreak(bool isAutoStartBreak) =>
+      this(isAutoStartBreak: isAutoStartBreak);
+
+  @override
+  SettingsModel isAutoStartTaskWhenAppLaunched(
+          bool isAutoStartTaskWhenAppLaunched) =>
+      this(isAutoStartTaskWhenAppLaunched: isAutoStartTaskWhenAppLaunched);
 
   @override
 
@@ -46,20 +55,27 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
   /// SettingsModel(...).copyWith(id: 12, name: "My name")
   /// ````
   SettingsModel call({
-    Object? autoStartTask = const $CopyWithPlaceholder(),
-    Object? autoStartBreak = const $CopyWithPlaceholder(),
+    Object? isAutoStartTask = const $CopyWithPlaceholder(),
+    Object? isAutoStartBreak = const $CopyWithPlaceholder(),
+    Object? isAutoStartTaskWhenAppLaunched = const $CopyWithPlaceholder(),
   }) {
     return SettingsModel(
-      isAutoStartTask:
-          autoStartTask == const $CopyWithPlaceholder() || autoStartTask == null
-              ? _value.isAutoStartTask
-              // ignore: cast_nullable_to_non_nullable
-              : autoStartTask as bool,
-      isAutoStartBreak: autoStartBreak == const $CopyWithPlaceholder() ||
-              autoStartBreak == null
+      isAutoStartTask: isAutoStartTask == const $CopyWithPlaceholder() ||
+              isAutoStartTask == null
+          ? _value.isAutoStartTask
+          // ignore: cast_nullable_to_non_nullable
+          : isAutoStartTask as bool,
+      isAutoStartBreak: isAutoStartBreak == const $CopyWithPlaceholder() ||
+              isAutoStartBreak == null
           ? _value.isAutoStartBreak
           // ignore: cast_nullable_to_non_nullable
-          : autoStartBreak as bool,
+          : isAutoStartBreak as bool,
+      isAutoStartTaskWhenAppLaunched:
+          isAutoStartTaskWhenAppLaunched == const $CopyWithPlaceholder() ||
+                  isAutoStartTaskWhenAppLaunched == null
+              ? _value.isAutoStartTaskWhenAppLaunched
+              // ignore: cast_nullable_to_non_nullable
+              : isAutoStartTaskWhenAppLaunched as bool,
     );
   }
 }

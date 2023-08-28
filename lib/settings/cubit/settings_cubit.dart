@@ -10,16 +10,30 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       : super(
           const SettingsState(
             status: SettingsStatus.loading,
-            settings:
-                SettingsModel(isAutoStartTask: false, isAutoStartBreak: false),
+            settings: SettingsModel(
+              isAutoStartTask: false,
+              isAutoStartBreak: false,
+              isAutoStartTaskWhenAppLaunched: false,
+            ),
           ),
         );
+
+  /// 앱 실행 시 task 타이머 자동 시작
+  void setAutoStartTaskWhenAppLaunched({required bool enable}) {
+    emit(
+      SettingsState(
+        status: SettingsStatus.loaded,
+        settings:
+            state.settings.copyWith(isAutoStartTaskWhenAppLaunched: enable),
+      ),
+    );
+  }
 
   void setAutoStartTask({required bool enable}) {
     emit(
       SettingsState(
         status: SettingsStatus.loaded,
-        settings: state.settings.copyWith(autoStartTask: enable),
+        settings: state.settings.copyWith(isAutoStartTask: enable),
       ),
     );
   }
@@ -28,7 +42,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     emit(
       SettingsState(
         status: SettingsStatus.loaded,
-        settings: state.settings.copyWith(autoStartBreak: enable),
+        settings: state.settings.copyWith(isAutoStartBreak: enable),
       ),
     );
   }
@@ -39,12 +53,16 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         settings: SettingsModel(
           isAutoStartTask: json['isAutoStartTask'] as bool? ?? false,
           isAutoStartBreak: json['isAutoStartBreak'] as bool? ?? false,
+          isAutoStartTaskWhenAppLaunched:
+              json['isAutoStartTaskWhenAppLaunched'] as bool? ?? false,
         ),
       );
 
   @override
   Map<String, dynamic>? toJson(SettingsState state) => {
         'isAutoStartTask': state.settings.isAutoStartTask,
-        'isAutoStartBreak': state.settings.isAutoStartBreak
+        'isAutoStartBreak': state.settings.isAutoStartBreak,
+        'isAutoStartTaskWhenAppLaunched':
+            state.settings.isAutoStartTaskWhenAppLaunched,
       };
 }
