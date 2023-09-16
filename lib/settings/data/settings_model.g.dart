@@ -14,6 +14,8 @@ abstract class _$SettingsModelCWProxy {
   SettingsModel isAutoStartTaskWhenAppLaunched(
       bool isAutoStartTaskWhenAppLaunched);
 
+  SettingsModel isMonitorOff(bool isMonitorOff);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SettingsModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -24,6 +26,7 @@ abstract class _$SettingsModelCWProxy {
     bool? isAutoStartTask,
     bool? isAutoStartBreak,
     bool? isAutoStartTaskWhenAppLaunched,
+    bool? isMonitorOff,
   });
 }
 
@@ -47,6 +50,10 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
       this(isAutoStartTaskWhenAppLaunched: isAutoStartTaskWhenAppLaunched);
 
   @override
+  SettingsModel isMonitorOff(bool isMonitorOff) =>
+      this(isMonitorOff: isMonitorOff);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SettingsModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -58,6 +65,7 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
     Object? isAutoStartTask = const $CopyWithPlaceholder(),
     Object? isAutoStartBreak = const $CopyWithPlaceholder(),
     Object? isAutoStartTaskWhenAppLaunched = const $CopyWithPlaceholder(),
+    Object? isMonitorOff = const $CopyWithPlaceholder(),
   }) {
     return SettingsModel(
       isAutoStartTask: isAutoStartTask == const $CopyWithPlaceholder() ||
@@ -76,6 +84,11 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
               ? _value.isAutoStartTaskWhenAppLaunched
               // ignore: cast_nullable_to_non_nullable
               : isAutoStartTaskWhenAppLaunched as bool,
+      isMonitorOff:
+          isMonitorOff == const $CopyWithPlaceholder() || isMonitorOff == null
+              ? _value.isMonitorOff
+              // ignore: cast_nullable_to_non_nullable
+              : isMonitorOff as bool,
     );
   }
 }
