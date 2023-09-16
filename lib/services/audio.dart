@@ -1,5 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 
+enum AudioType { complete, breakBefore10Second }
+
 class AudioService {
   AudioService() {
     _init();
@@ -15,12 +17,18 @@ class AudioService {
     return _player.setAsset(assetPath);
   }
 
-  void play() {
-    _player.play();
-  }
-
-  void stop() {
+  void play(AudioType type) {
     _player.stop();
-    _init();
+
+    switch (type) {
+      case AudioType.complete:
+        open('assets/audio/complete00.mp3');
+        break;
+      case AudioType.breakBefore10Second:
+        open('assets/audio/break.m4a');
+        break;
+    }
+
+    _player.play();
   }
 }

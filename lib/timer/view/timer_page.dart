@@ -7,6 +7,7 @@ import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
 import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
+import 'package:process_run/process_run.dart';
 import 'package:window_manager/window_manager.dart';
 
 class TimerPage extends StatelessWidget with WindowListener {
@@ -61,6 +62,11 @@ class TimerPage extends StatelessWidget with WindowListener {
             if (isAutoStartBreak) {
               context.read<TimerCubit>().start();
               skipDialog = true;
+            }
+            // monitor off when break
+            if (settingsCubit.state.settings.isMonitorOff) {
+              final shell = Shell();
+              shell.run('pmset displaysleepnow');
             }
           } else {
             if (isAutoStartTask) {

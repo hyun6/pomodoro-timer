@@ -14,6 +14,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
               isAutoStartTask: false,
               isAutoStartBreak: false,
               isAutoStartTaskWhenAppLaunched: false,
+              isMonitorOff: false,
             ),
           ),
         );
@@ -47,6 +48,15 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     );
   }
 
+  void setMonitorOff({required bool enable}) {
+    emit(
+      SettingsState(
+        status: SettingsStatus.loaded,
+        settings: state.settings.copyWith(isMonitorOff: enable),
+      ),
+    );
+  }
+
   @override
   SettingsState? fromJson(Map<String, dynamic> json) => SettingsState(
         status: SettingsStatus.loaded,
@@ -55,6 +65,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
           isAutoStartBreak: json['isAutoStartBreak'] as bool? ?? false,
           isAutoStartTaskWhenAppLaunched:
               json['isAutoStartTaskWhenAppLaunched'] as bool? ?? false,
+          isMonitorOff: json['isMonitorOff'] as bool? ?? false,
         ),
       );
 
@@ -64,5 +75,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         'isAutoStartBreak': state.settings.isAutoStartBreak,
         'isAutoStartTaskWhenAppLaunched':
             state.settings.isAutoStartTaskWhenAppLaunched,
+        'isMonitorOff': state.settings.isMonitorOff,
       };
 }

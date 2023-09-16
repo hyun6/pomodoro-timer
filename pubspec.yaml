@@ -22,6 +22,7 @@ dependencies:
   launch_at_startup: ^0.2.2
   package_info_plus: ^4.1.0
   path_provider: ^2.0.15
+  process_run: ^0.13.1
   system_tray: ^2.0.3
   window_manager: ^0.3.2
 

@@ -29,6 +29,7 @@ void main() {
           isAutoStartTask: false,
           isAutoStartBreak: true,
           isAutoStartTaskWhenAppLaunched: false,
+          isMonitorOff: false,
         ),
       ),
     );

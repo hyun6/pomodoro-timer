@@ -47,6 +47,15 @@ class SettingsPage extends StatelessWidget {
                         );
                   },
                 ),
+                CheckboxWithText(
+                  text: 'monitor off when break start',
+                  value: state.settings.isMonitorOff,
+                  onChanged: (bool? changedValue) {
+                    context.read<SettingsCubit>().setMonitorOff(
+                          enable: changedValue ?? !state.settings.isMonitorOff,
+                        );
+                  },
+                ),
               ],
             ),
           ),

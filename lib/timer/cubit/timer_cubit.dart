@@ -76,6 +76,11 @@ class TimerCubit extends Cubit<TimerState> {
 
   // count down callback listener
   void _onCountDown(int count) {
+    // break before 10 seconds sound
+    if (count == 10 && _currentTask.name == 'focus') {
+      _audioService.play(AudioType.breakBefore10Second);
+    }
+
     if (count == 0) {
       _onComplete();
     } else {
@@ -87,9 +92,7 @@ class TimerCubit extends Cubit<TimerState> {
     // switch (focus <-> break) task
     switchCurrentTask();
 
-    _audioService
-      ..stop()
-      ..play();
+    _audioService.play(AudioType.complete);
     windowManager.show();
 
     emit(
