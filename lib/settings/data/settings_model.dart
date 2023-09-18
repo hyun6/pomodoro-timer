@@ -9,6 +9,7 @@ class SettingsModel {
     required this.isAutoStartBreak,
     required this.isAutoStartTaskWhenAppLaunched,
     required this.isMonitorOff,
+    required this.volume,
   });
 
   final bool isAutoStartTask;
@@ -17,4 +18,6 @@ class SettingsModel {
   final bool isAutoStartTaskWhenAppLaunched;
   // 모니터 끄기
   final bool isMonitorOff;
+  // 0~100
+  final int volume;
 }

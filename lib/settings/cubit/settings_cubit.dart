@@ -15,6 +15,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
               isAutoStartBreak: false,
               isAutoStartTaskWhenAppLaunched: false,
               isMonitorOff: false,
+              volume: 50,
             ),
           ),
         );
@@ -57,6 +58,15 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     );
   }
 
+  void setVolume({required int volume}) {
+    emit(
+      SettingsState(
+        status: SettingsStatus.loaded,
+        settings: state.settings.copyWith(volume: volume),
+      ),
+    );
+  }
+
   @override
   SettingsState? fromJson(Map<String, dynamic> json) => SettingsState(
         status: SettingsStatus.loaded,
@@ -66,6 +76,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
           isAutoStartTaskWhenAppLaunched:
               json['isAutoStartTaskWhenAppLaunched'] as bool? ?? false,
           isMonitorOff: json['isMonitorOff'] as bool? ?? false,
+          volume: json['volume'] as int? ?? 5,
         ),
       );
 
@@ -76,5 +87,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         'isAutoStartTaskWhenAppLaunched':
             state.settings.isAutoStartTaskWhenAppLaunched,
         'isMonitorOff': state.settings.isMonitorOff,
+        'volume': state.settings.volume,
       };
 }

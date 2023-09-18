@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pomodoro_timer/services/audio_service.dart';
 import 'package:pomodoro_timer/settings/cubit/settings_cubit.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -55,6 +57,25 @@ class SettingsPage extends StatelessWidget {
                           enable: changedValue ?? !state.settings.isMonitorOff,
                         );
                   },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('volume: '),
+                    Slider(
+                      value: state.settings.volume.toDouble(),
+                      max: 100,
+                      divisions: 10,
+                      label: state.settings.volume.toString(),
+                      onChanged: (value) {
+                        context
+                            .read<SettingsCubit>()
+                            .setVolume(volume: value.toInt());
+
+                        GetIt.I<AudioService>().setVolume(value / 100);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer/services/audio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pomodoro_timer/services/audio_service.dart';
 import 'package:pomodoro_timer/services/countdown.dart';
 import 'package:pomodoro_timer/timer/data/task_model.dart';
 import 'package:window_manager/window_manager.dart';
@@ -25,7 +26,7 @@ class TimerCubit extends Cubit<TimerState> {
   TimerCubit()
       : super(TimerState(focusTask, TimerStatus.idle, focusTask.duration));
 
-  final AudioService _audioService = AudioService();
+  final AudioService _audioService = GetIt.I<AudioService>();
   StreamSubscription<int>? _countDownStreamSubscription;
   TaskModel _currentTask = focusTask;
 
