@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pomodoro_timer/services/tray_service.dart';
 import 'package:pomodoro_timer/settings/cubit/settings_cubit.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
 import 'package:pomodoro_timer/timer/widget/task_name.dart';
 import 'package:pomodoro_timer/timer/widget/timer_display.dart';
-import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
 import 'package:process_run/process_run.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -30,7 +31,7 @@ class TimerPage extends StatelessWidget with WindowListener {
       create: (_) {
         final timerCubit = TimerCubit();
         // init tray icon click handler
-        context.read<TrayCubit>()
+        GetIt.instance<TrayService>()
           ..setLeftClickHandler(windowManager.show)
           ..setRightClickHandler(() {
             if (timerCubit.state.status == TimerStatus.running) {

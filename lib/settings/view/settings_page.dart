@@ -72,7 +72,7 @@ class SettingsPage extends StatelessWidget {
                             .read<SettingsCubit>()
                             .setVolume(volume: value.toInt());
 
-                        GetIt.I<AudioService>().setVolume(value / 100);
+                        GetIt.instance<AudioService>().setVolume(value / 100);
                       },
                     ),
                   ],

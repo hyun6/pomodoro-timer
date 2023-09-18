@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pomodoro_timer/services/tray_service.dart';
 import 'package:pomodoro_timer/timer/cubit/timer_cubit.dart';
-import 'package:pomodoro_timer/tray/cubit/tray_cubit.dart';
 
 class TimerDisplayWidget extends StatelessWidget {
   const TimerDisplayWidget({super.key});
@@ -15,7 +16,7 @@ class TimerDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tick = context.select((TimerCubit cubit) => cubit.state.tick);
-    context.read<TrayCubit>().setTitle(_tickToTimeText(tick));
+    GetIt.instance<TrayService>().setTitle(_tickToTimeText(tick));
 
     return Column(
       children: [

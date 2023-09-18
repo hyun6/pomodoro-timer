@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pomodoro_timer/services/audio_service.dart';
+import 'package:pomodoro_timer/services/tray_service.dart';
 import 'package:window_manager/window_manager.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -34,6 +35,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       WidgetsFlutterBinding.ensureInitialized();
 
       GetIt.instance.registerSingleton(AudioService());
+      final trayService = TrayService();
+      await trayService.init();
+      GetIt.instance.registerSingleton(trayService);
 
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: await getApplicationSupportDirectory(),

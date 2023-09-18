@@ -26,7 +26,7 @@ class TimerCubit extends Cubit<TimerState> {
   TimerCubit()
       : super(TimerState(focusTask, TimerStatus.idle, focusTask.duration));
 
-  final AudioService _audioService = GetIt.I<AudioService>();
+  final AudioService _audioService = GetIt.instance<AudioService>();
   StreamSubscription<int>? _countDownStreamSubscription;
   TaskModel _currentTask = focusTask;
 
