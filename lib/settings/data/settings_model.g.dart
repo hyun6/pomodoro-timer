@@ -16,6 +16,8 @@ abstract class _$SettingsModelCWProxy {
 
   SettingsModel isMonitorOff(bool isMonitorOff);
 
+  SettingsModel volume(int volume);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SettingsModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -27,6 +29,7 @@ abstract class _$SettingsModelCWProxy {
     bool? isAutoStartBreak,
     bool? isAutoStartTaskWhenAppLaunched,
     bool? isMonitorOff,
+    int? volume,
   });
 }
 
@@ -54,6 +57,9 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
       this(isMonitorOff: isMonitorOff);
 
   @override
+  SettingsModel volume(int volume) => this(volume: volume);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SettingsModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -66,6 +72,7 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
     Object? isAutoStartBreak = const $CopyWithPlaceholder(),
     Object? isAutoStartTaskWhenAppLaunched = const $CopyWithPlaceholder(),
     Object? isMonitorOff = const $CopyWithPlaceholder(),
+    Object? volume = const $CopyWithPlaceholder(),
   }) {
     return SettingsModel(
       isAutoStartTask: isAutoStartTask == const $CopyWithPlaceholder() ||
@@ -89,6 +96,10 @@ class _$SettingsModelCWProxyImpl implements _$SettingsModelCWProxy {
               ? _value.isMonitorOff
               // ignore: cast_nullable_to_non_nullable
               : isMonitorOff as bool,
+      volume: volume == const $CopyWithPlaceholder() || volume == null
+          ? _value.volume
+          // ignore: cast_nullable_to_non_nullable
+          : volume as int,
     );
   }
 }

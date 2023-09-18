@@ -16,6 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.2
   flutter_localizations:
     sdk: flutter
+  get_it: ^7.6.4
   hydrated_bloc: ^9.1.0
   intl: ^0.18.0
   just_audio: ^0.9.32

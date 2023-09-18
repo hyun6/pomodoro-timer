@@ -30,6 +30,7 @@ void main() {
           isAutoStartBreak: true,
           isAutoStartTaskWhenAppLaunched: false,
           isMonitorOff: false,
+          volume: 50,
         ),
       ),
     );

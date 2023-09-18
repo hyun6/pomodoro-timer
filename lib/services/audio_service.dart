@@ -31,4 +31,9 @@ class AudioService {
 
     _player.play();
   }
+
+  // 0.0 ~ 1.0
+  void setVolume(double volume) {
+    _player.setVolume(volume);
+  }
 }
