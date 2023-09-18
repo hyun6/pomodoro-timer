@@ -32,11 +32,11 @@ class TrayService {
     _systemTray.setTitle(title);
   }
 
-  set leftClickHandler(VoidCallback handler) {
+  void setLeftClickHandler(VoidCallback handler) {
     _leftClickHandler = handler;
   }
 
-  set rightClickHandler(VoidCallback handler) {
+  void setRightClickHandler(VoidCallback handler) {
     _rightClickHandler = handler;
   }
 }
