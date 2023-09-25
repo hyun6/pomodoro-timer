@@ -1,8 +1,3 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
-
-part 'settings_model.g.dart';
-
-@CopyWith()
 class SettingsModel {
   const SettingsModel({
     required this.isAutoStartTask,
@@ -20,4 +15,21 @@ class SettingsModel {
   final bool isMonitorOff;
   // 0~100
   final int volume;
+
+  SettingsModel copyWith({
+    bool? isAutoStartTask,
+    bool? isAutoStartBreak,
+    bool? isAutoStartTaskWhenAppLaunched,
+    bool? isMonitorOff,
+    int? volume,
+  }) {
+    return SettingsModel(
+      isAutoStartTask: isAutoStartTask ?? this.isAutoStartTask,
+      isAutoStartBreak: isAutoStartBreak ?? this.isAutoStartBreak,
+      isAutoStartTaskWhenAppLaunched:
+          isAutoStartTaskWhenAppLaunched ?? this.isAutoStartTaskWhenAppLaunched,
+      isMonitorOff: isMonitorOff ?? this.isMonitorOff,
+      volume: volume ?? this.volume,
+    );
+  }
 }
