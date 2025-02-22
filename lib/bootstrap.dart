@@ -30,32 +30,31 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = AppBlocObserver();
 
-  await runZonedGuarded(
-    () async {
-      WidgetsFlutterBinding.ensureInitialized();
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-      GetIt.instance.registerSingleton(AudioService());
-      final trayService = TrayService();
-      await trayService.init();
-      GetIt.instance.registerSingleton(trayService);
+    GetIt.instance.registerSingleton(AudioService());
+    final trayService = TrayService();
+    await trayService.init();
+    GetIt.instance.registerSingleton(trayService);
 
-      HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: await getApplicationSupportDirectory(),
-      );
-      runApp(await builder());
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: HydratedStorageDirectory(
+        (await getApplicationSupportDirectory()).path,
+      ),
+    );
+    runApp(await builder());
 
-      await windowManager.ensureInitialized();
-      const windowOptions = WindowOptions(
-        size: Size(800, 600),
-        center: true,
-        skipTaskbar: false,
-        titleBarStyle: TitleBarStyle.normal,
-      );
-      await windowManager.waitUntilReadyToShow(windowOptions, () async {
-        await windowManager.show();
-        await windowManager.focus();
-      });
-    },
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
-  );
+    await windowManager.ensureInitialized();
+    const windowOptions = WindowOptions(
+      size: Size(800, 600),
+      center: true,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+    );
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }, (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),);
 }

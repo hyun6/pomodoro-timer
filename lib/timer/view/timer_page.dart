@@ -66,8 +66,7 @@ class TimerPage extends StatelessWidget with WindowListener {
             }
             // monitor off when break
             if (settingsCubit.state.settings.isMonitorOff) {
-              final shell = Shell();
-              shell.run('pmset displaysleepnow');
+              Shell().run('pmset displaysleepnow');
             }
           } else {
             if (isAutoStartTask) {
