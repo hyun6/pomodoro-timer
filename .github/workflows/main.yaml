@@ -23,7 +23,7 @@ jobs:
         shell: bash
       
       # upload
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: my-artifact
           path: ~/Dev/actions-runner/_work/pomodoro-timer/pomodoro-timer/build/macos/Build/Products/Release/
